@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Form Validation Tool</title>
+	<script>
+		function validateForm() {
+			// Get all the input fields from the form
+			let inputs = document.forms["myForm"].getElementsByTagName("input");
+			for (let i = 0; i < inputs.length; i++) {
+				let input = inputs[i];
+				// Check if the input is required and empty
+				if (input.hasAttribute("required") && input.value.trim() === "") {
+					alert(input.name + " must be filled out.");
+					return false;
+				}
+				// Check input patterns
+				if (input.dataset.pattern) {
+					let pattern = new RegExp(input.dataset.pattern);
+					if (!pattern.test(input.value)) {
+						alert(input.name + " is invalid.");
+						return false;
+					}
+				}
+			}
+			// All inputs are valid
+			alert("Form submitted successfully!");
+			return true;
+		}
+	</script>
+</head>
+<body>
+	<h2>Form Validation Tool</h2>
+	<form name="myForm" action="/action_page.php" onsubmit="return validateForm()" method="post">
+		<label for="name">Name:</label>
+		<input type="text" name="name" required>
+
+		<label for="email">Email:</label>
+		<input type="email" name="email" required data-pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+
+		<label for="phone">Phone:</label>
+		<input type="tel" name="phone" required data-pattern="^\d{10}$">
+
+		<label for="password">Password:</label>
+		<input type="password" name="password" required data-pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$">
+
+		<input type="submit" value="Submit">
+	</form>
+</body>
+</html>
